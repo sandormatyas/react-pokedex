@@ -1,0 +1,7 @@
+.poke-card {
+  background-color: skyblue;
+  display: inline-block;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 10%;
+}

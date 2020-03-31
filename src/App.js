@@ -48,7 +48,7 @@ export class App extends Component {
   }
 
   addPokemonToPokemonList(pokemon) {
-    return this.setState(currentState => ({
+    this.setState(currentState => ({
       pokemonList: [...currentState.pokemonList, pokemon.data]
     }));
   }

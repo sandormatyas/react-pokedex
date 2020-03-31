@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
 
@@ -8,17 +8,16 @@ import PokemonDetail from "./components/PokemonElements/PokemonDetail";
 import TypeList from "./components/TypeList";
 import Header from "./components/UserInterface/Header";
 
-export class App extends Component {
-  state = {
-    pokemonList: [],
-    types: []
-  };
+const App = props => {
+  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonTypes, setPokemonTypes] = useState([]);
 
-  componentDidMount() {
-    this.getData();
-  }
+  const getData = useCallback(() => {
+    console.log("fetching...");
+    const addPokemonToPokemonList = pokemon => {
+      setPokemonList(prevElements => [...prevElements, pokemon.data]);
+    };
 
-  getData() {
     // Get the first 20 pokemon
     axios
       .get("https://pokeapi.co/api/v2/pokemon")
@@ -26,70 +25,66 @@ export class App extends Component {
         pokemonList.data.results.map(singlePokemon =>
           axios
             .get(singlePokemon.url)
-            .then(pokemon => this.addPokemonToPokemonList(pokemon))
+            .then(pokemon => addPokemonToPokemonList(pokemon))
         )
       );
 
     // I add Vaporeon separately because my girlfriend insisted on doing so
     axios
       .get("https://pokeapi.co/api/v2/pokemon/134/")
-      .then(pokemon => this.addPokemonToPokemonList(pokemon));
+      .then(pokemon => addPokemonToPokemonList(pokemon));
 
     // Get Pokemon types
-    axios.get("https://pokeapi.co/api/v2/type").then(types =>
-      types.data.results.map(type =>
-        axios.get(type.url).then(typeDetails =>
-          this.setState(currentState => ({
-            types: [...currentState.types, typeDetails.data]
-          }))
+    axios
+      .get("https://pokeapi.co/api/v2/type")
+      .then(types =>
+        types.data.results.map(type =>
+          axios
+            .get(type.url)
+            .then(typeDetails =>
+              setPokemonTypes(prevElements => [
+                ...prevElements,
+                typeDetails.data
+              ])
+            )
         )
-      )
-    );
-  }
+      );
+  }, []);
 
-  addPokemonToPokemonList(pokemon) {
-    this.setState(currentState => ({
-      pokemonList: [...currentState.pokemonList, pokemon.data]
-    }));
-  }
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  getPokemonDetails(id) {
-    const pokemon = this.state.pokemonList.filter(
-      pokemon => pokemon.id === parseInt(id)
-    );
+  const getPokemonDetails = id => {
+    const pokemon = pokemonList.filter(pokemon => pokemon.id === parseInt(id));
     return pokemon;
-  }
+  };
 
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <Header />
-          <Route
-            exact
-            path="/"
-            render={props => (
-              <PokemonList pokemonList={this.state.pokemonList} />
-            )}
-          />
-          {/* <PokemonList pokemonList={this.state.pokemonList} /> */}
-          <Route
-            exact
-            path="/pokemon/:id"
-            render={props => (
-              <PokemonDetail
-                pokemon={this.getPokemonDetails(props.match.params.id)}
-              />
-            )}
-          />
-          <Route
-            path="/types"
-            render={props => <TypeList types={this.state.types} />}
-          />
-        </div>
-      </Router>
-    );
-  }
-}
+  const content = (
+    <Router>
+      <div className="App">
+        <Header />
+        <Route
+          exact
+          path="/"
+          render={props => <PokemonList pokemonList={pokemonList} />}
+        />
+        <Route
+          exact
+          path="/pokemon/:id"
+          render={props => (
+            <PokemonDetail pokemon={getPokemonDetails(props.match.params.id)} />
+          )}
+        />
+        <Route
+          path="/types"
+          render={props => <TypeList types={pokemonTypes} />}
+        />
+      </div>
+    </Router>
+  );
+  return content;
+};
 
 export default App;

@@ -1,18 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 
-export class TypeList extends Component {
-  render() {
-    console.log(this.props.types);
-    return (
-      <div className="container" id="typeContainer">
-        <ul>
-          {this.props.types.map(type => (
-            <li key={type.id}>{type.name}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-}
+const TypeList = props => {
+  return (
+    <div className="container" id="typeContainer">
+      <ul>
+        {props.types.map(type => (
+          <li key={type.id}>{type.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 export default TypeList;

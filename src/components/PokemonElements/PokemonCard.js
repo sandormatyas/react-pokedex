@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
+import Card from "../../style/Card";
 
 const PokemonCard = props => {
   const pokemon = props.pokemon;
@@ -16,10 +17,10 @@ const PokemonCard = props => {
     content = <Redirect to={redirect} />;
   } else {
     content = (
-      <div className="poke-card" onClick={redirectToPokemon}>
+      <Card onClick={redirectToPokemon}>
         <img src={pokemon.sprites.front_default} alt={pokemon.name}></img>
         <p>{pokemon.name}</p>
-      </div>
+      </Card>
     );
   }
   return content;

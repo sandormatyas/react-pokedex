@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import HeaderContainer from "../../style/HeaderContainer";
-import { Context } from "../../App";
+import { AppContext } from "../../AppContext";
 
 const Header = props => {
-  const toggleTheme = useContext(Context);
+  const { toggleTheme } = useContext(AppContext);
   return (
     <HeaderContainer id="header">
       <h1>

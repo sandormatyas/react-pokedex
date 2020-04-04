@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "../../style/Container";
+import { AppContext } from "../../AppContext";
 
 const PokemonDetail = props => {
-  const pokemon = props.pokemon[0];
+  const id = props.match.params.id;
+  const { getPokemonDetails } = useContext(AppContext);
+  const pokemon = getPokemonDetails.bind(null, id);
+
   let content;
   if (pokemon === undefined) {
     content = null;

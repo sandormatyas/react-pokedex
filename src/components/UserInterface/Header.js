@@ -1,17 +1,21 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import HeaderContainer from "../../style/HeaderContainer";
-import { AppContext } from "../../AppContext";
+import ThemeToggler from "./ThemeToggler";
 
 const Header = props => {
-  const { toggleTheme } = useContext(AppContext);
   return (
-    <HeaderContainer id="header">
-      <h1>
-        <Link to="/">Reactomon</Link>
-      </h1>
-      <Link to="/">Pokemon</Link> | <Link to="/types">Types</Link> |{" "}
-      <span onClick={toggleTheme}>Toggle theme</span>
+    <HeaderContainer>
+      <div className="title">
+        <Link id="page-title" to="/">
+          Reactomon
+        </Link>
+        <ThemeToggler />
+      </div>
+      <div className="nav">
+        <Link to="/">Pokemon</Link>
+        <Link to="/types">Types</Link>
+      </div>
     </HeaderContainer>
   );
 };

@@ -3,6 +3,6 @@ export default {
   secondaryColor: "#dc0a2d",
   fontColor: "#fff",
 
-  cardTextColor: "#000000",
-  cardBackground: "#fff"
+  cardTextColor: "#fff",
+  cardBackground: "#7d1111"
 };

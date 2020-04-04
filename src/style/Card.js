@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export default styled.div`
   text-align: center;
+  text-transform: capitalize;
   background-color: ${props => props.theme.cardBackground};
   color: ${props => props.theme.cardTextColor};
   display: inline-block;

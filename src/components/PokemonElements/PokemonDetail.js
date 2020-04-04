@@ -5,10 +5,10 @@ import { AppContext } from "../../AppContext";
 const PokemonDetail = props => {
   const id = props.match.params.id;
   const { getPokemonDetails } = useContext(AppContext);
-  const pokemon = getPokemonDetails.bind(null, id);
+  const pokemon = getPokemonDetails(id);
 
   let content;
-  if (pokemon === undefined) {
+  if (pokemon === null) {
     content = null;
   } else {
     content = (

@@ -8,6 +8,7 @@ import PokemonDetail from "./components/PokemonElements/PokemonDetail";
 import TypeList from "./components/TypeList";
 import Header from "./components/UserInterface/Header";
 import { AppContext } from "./AppContext";
+import "./App.css";
 
 const App = props => {
   const { setPokemonList } = useContext(AppContext);
@@ -34,6 +35,11 @@ const App = props => {
     // I add Vaporeon separately because my girlfriend insisted on doing so
     axios
       .get("https://pokeapi.co/api/v2/pokemon/134/")
+      .then(pokemon => addPokemonToPokemonList(pokemon));
+
+    //This one is for me
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon/443/")
       .then(pokemon => addPokemonToPokemonList(pokemon));
 
     // Get Pokemon types

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, createContext } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import axios from "axios";
 import { ThemeProvider } from "styled-components";
@@ -11,6 +11,7 @@ import Header from "./components/UserInterface/Header";
 import Pokedex from "./style/themes/Pokedex";
 import Bluebase from "./style/themes/Bluebase";
 
+export const Context = createContext();
 const App = props => {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonTypes, setPokemonTypes] = useState([]);
@@ -73,31 +74,33 @@ const App = props => {
   };
 
   const content = (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <div className="App">
-          <Header toggleTheme={toggleTheme} />
-          <Route
-            exact
-            path="/"
-            render={props => <PokemonList pokemonList={pokemonList} />}
-          />
-          <Route
-            exact
-            path="/pokemon/:id"
-            render={props => (
-              <PokemonDetail
-                pokemon={getPokemonDetails(props.match.params.id)}
-              />
-            )}
-          />
-          <Route
-            path="/types"
-            render={props => <TypeList types={pokemonTypes} />}
-          />
-        </div>
-      </Router>
-    </ThemeProvider>
+    <Context.Provider value={toggleTheme}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div className="App">
+            <Header />
+            <Route
+              exact
+              path="/"
+              render={props => <PokemonList pokemonList={pokemonList} />}
+            />
+            <Route
+              exact
+              path="/pokemon/:id"
+              render={props => (
+                <PokemonDetail
+                  pokemon={getPokemonDetails(props.match.params.id)}
+                />
+              )}
+            />
+            <Route
+              path="/types"
+              render={props => <TypeList types={pokemonTypes} />}
+            />
+          </div>
+        </Router>
+      </ThemeProvider>
+    </Context.Provider>
   );
   return content;
 };
